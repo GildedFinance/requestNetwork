@@ -71,6 +71,8 @@ export default class RequestNetwork {
     constructor(options?: { provider?: any, ethNetworkId?: number, useIpfsPublic?: boolean, bitcoinNetworkId?: number, ipfsCustomNode?: object} | any, ethNetworkId?: number, useIpfsPublic?: boolean) {
         let bitcoinNetworkId;
 
+        console.log('CONSTRUCTING 1');
+
         // Parameter handling
         let provider = options;
         if (options && (options.provider || options.ethNetworkId || options.useIpfsPublic || options.bitcoinNetworkId)) {
@@ -182,8 +184,11 @@ export default class RequestNetwork {
 
         // Create an ETH Request
         if (currency === Types.Currency.ETH) {
+            console.log('ETH request', as, Types.Role.Payee);
+
             const requestEthereumService: RequestEthereumService = currencyUtils.serviceForCurrency(currency);
             if (as === Types.Role.Payee) {
+                console.log('as payee');
                 // Create an ETH Request as Payee
                 promise = requestEthereumService.createRequestAsPayee(
                     payees.map(payee => payee.idAddress),
@@ -199,6 +204,7 @@ export default class RequestNetwork {
             }
 
             if (as === Types.Role.Payer) {
+                console.log('as payer');
                 // Create an ETH Request as Payer
                 promise = requestEthereumService.createRequestAsPayer(
                     payees.map(payee => payee.idAddress),

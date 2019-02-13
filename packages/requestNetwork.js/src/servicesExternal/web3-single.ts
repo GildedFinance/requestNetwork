@@ -91,10 +91,12 @@ export default class Web3Single {
             _callbackTransactionError: Types.CallbackTransactionError,
             _options?: any) {
 
+        console.log('BROADCAST 1', _method);
+
         const options = Object.assign({}, _options || {});
         options.numberOfConfirmation = undefined;
 
-        if (!options.from) {
+        if (!options.from) { 
             try {
                 const accounts = await this.web3.eth.getAccounts();
                 options.from = accounts[0];
@@ -110,27 +112,38 @@ export default class Web3Single {
                             : this.web3.utils.toWei(config.ethereum.gasPriceDefault,
                                                     config.ethereum.gasPriceDefaultUnit);
 
-        if (options.skipSimulation) {
+        // if (options.skipSimulation) {
+            console.log('BROADCAST 2');
             if (!forcedGas) {
-                return _callbackTransactionError(Error('you must give a gas limit if you use the flag "skipSimulation"'));
+                // return _callbackTransactionError(Error('you must give a gas limit if you use the flag "skipSimulation"'));
             }
             options.skipSimulation = undefined;
+        
+            const myAbi = '[{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"owners","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"owner","type":"address"}],"name":"removeOwner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"transactionId","type":"uint256"}],"name":"revokeConfirmation","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"isOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"address"}],"name":"confirmations","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"calcMaxWithdraw","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"pending","type":"bool"},{"name":"executed","type":"bool"}],"name":"getTransactionCount","outputs":[{"name":"count","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"dailyLimit","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"lastDay","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"owner","type":"address"}],"name":"addOwner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"transactionId","type":"uint256"}],"name":"isConfirmed","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"transactionId","type":"uint256"}],"name":"getConfirmationCount","outputs":[{"name":"count","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"transactions","outputs":[{"name":"destination","type":"address"},{"name":"value","type":"uint256"},{"name":"data","type":"bytes"},{"name":"executed","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getOwners","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"from","type":"uint256"},{"name":"to","type":"uint256"},{"name":"pending","type":"bool"},{"name":"executed","type":"bool"}],"name":"getTransactionIds","outputs":[{"name":"_transactionIds","type":"uint256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"transactionId","type":"uint256"}],"name":"getConfirmations","outputs":[{"name":"_confirmations","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"transactionCount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_required","type":"uint256"}],"name":"changeRequirement","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"transactionId","type":"uint256"}],"name":"confirmTransaction","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"destination","type":"address"},{"name":"value","type":"uint256"},{"name":"data","type":"bytes"}],"name":"submitTransaction","outputs":[{"name":"transactionId","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_dailyLimit","type":"uint256"}],"name":"changeDailyLimit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"MAX_OWNER_COUNT","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"required","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"owner","type":"address"},{"name":"newOwner","type":"address"}],"name":"replaceOwner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"transactionId","type":"uint256"}],"name":"executeTransaction","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"spentToday","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_owners","type":"address[]"},{"name":"_required","type":"uint256"},{"name":"_dailyLimit","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":false,"name":"dailyLimit","type":"uint256"}],"name":"DailyLimitChange","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"sender","type":"address"},{"indexed":true,"name":"transactionId","type":"uint256"}],"name":"Confirmation","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"sender","type":"address"},{"indexed":true,"name":"transactionId","type":"uint256"}],"name":"Revocation","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"transactionId","type":"uint256"}],"name":"Submission","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"transactionId","type":"uint256"}],"name":"Execution","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"transactionId","type":"uint256"}],"name":"ExecutionFailure","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"sender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Deposit","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"}],"name":"OwnerAddition","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"}],"name":"OwnerRemoval","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"required","type":"uint256"}],"name":"RequirementChange","type":"event"}]';
+
+            // TODO: Get ABI and contract address for this transaction
+            this.web3.eth.contract(myAbi).at('0xd88ab9b1691340E04a5BBf78529c11d592d35f57');
+
+
             _method.send(options)
                 .on('transactionHash', _callbackTransactionHash)
                 .on('receipt', _callbackTransactionReceipt)
                 .on('confirmation', _callbackTransactionConfirmation)
                 .on('error', _callbackTransactionError);
             return;
-        }
+        // }
 
         // get the gas estimation
         _method.estimateGas(options, (err: any, estimateGas: number) => {
+            console.log('BROADCAST 3');
             if (err) return _callbackTransactionError(err);
             // it is safer to add 5% of gas
             options.gas = forcedGas ? forcedGas : Math.floor(estimateGas * 1.05);
             // try the method offline
             _method.call(options, (errCall: Error, resultCall: any) => {
+                console.log('BROADCAST 4');
                 if (errCall) {
+                    console.log('BROADCAST 5');
                     // let's try with more gas (*2)
                     options.gas = forcedGas ? forcedGas : Math.floor(estimateGas * 2);
                     // try the method offline
@@ -145,6 +158,7 @@ export default class Web3Single {
                             .on('error', _callbackTransactionError);
                     });
                 } else {
+                    console.log('BROADCAST 6', options);
                     // everything looks fine, let's send the transation
                     _method.send(options)
                         .on('transactionHash', _callbackTransactionHash)
@@ -162,11 +176,15 @@ export default class Web3Single {
      * @param    _options   options for the method (gasPrice, gas, value, from)
      */
     public callMethod(_method: any, _options ?: any): Promise<any> {
+        console.log('CALLING 1');
         return new Promise((resolve, reject) => {
             _method.estimateGas(_options, (errEstimateGas: any, estimateGas: number) => {
                 if (errEstimateGas) return reject(errEstimateGas);
 
+                console.log('CALLING 2');
+
                 _method.call(_options, (errCall: Error, resultCall: any) => {
+                    console.log('CALLING 3');
                     if (errCall) return reject(errCall);
                     return resolve(resultCall);
                 });
